@@ -33,7 +33,7 @@ body {
     display: block;
 }
 
-.numButton, .opButton {
+.numButton, .opButton, #pointButton {
     width: 4rem;
     height: 4rem;
     padding: 0;
@@ -61,3 +61,41 @@ body {
     font-size: 3rem;
 }
 
+
+#follower {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    pointer-events: none; /* So it doesn't interfere with mouse events */
+    transform: translate(-50%, -50%); /* Centers the circle on cursor */
+    transition: transform 0.1s ease-out; /* Smooth following */
+}
+
+button {
+  position: relative;
+  background: #3b82f6;
+  overflow: hidden;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonColoring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10rem;
+  height: 10rem;
+  transition: left 0.5s ease, top 0.5s ease;
+  transform: rotate(0);
+  z-index: 2;
+  background-color: #8b5cf6;
+  border-radius: 100%;
+}
+
+/* button:hover .buttonColoring {
+    left: 0;
+    top: 0;
+} */

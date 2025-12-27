@@ -9,16 +9,16 @@ let operate = function() {
 
     switch (op.id) {
         case "add":
-            result = val1 + val2;
+            result = parseFloat((val2 + val1).toFixed(10));
             break;
         case "subtract":
-            result = val1 - val2;
+            result = parseFloat((val2 - val1).toFixed(10));
             break;
         case "multiply":
-            result = val1 * val2;
+            result = parseFloat((val2 * val1).toFixed(10));
             break;
         case "divide":
-            result = parseFloat((val1 / val2).toFixed(4));
+            result = parseFloat((val2 / val1).toFixed(10));
             break;
     }
 
@@ -34,7 +34,7 @@ let setNumber = function(num) {
         val2 = val1;
         val1 = num;
     } else if (val1 || op) {
-        val1 = val1*10 + num;
+        val1 = `${val1}${num}`;
     } else {
         val1 = num;
     }
@@ -72,7 +72,7 @@ let updateDisplay = function() {
         // topRow.textContent = `${val2} ${op.innerHTML}`;
     }
 
-    thing.textContent = `${val1}, ${val2}, ${op.id}`;
+    thing.textContent = `Val1, val2, op: ${val1}, ${val2}, ${op.id}`;
 }
 
 let numButtons = document.querySelectorAll(".numButton");
@@ -87,7 +87,7 @@ numButtons.forEach((element) => {
 
 let clearButton = document.querySelector("#clear");
 let delButton = document.querySelector("#delete");
-
+let pointButton = document.querySelector("#pointButton")
 
 clearButton.addEventListener("click", () => {
     val1 = null;
@@ -98,13 +98,17 @@ clearButton.addEventListener("click", () => {
 
 
 delButton.addEventListener("click", () => {
-    val1 = Math.floor(val1/10);
-    if (val1 == 0) {
+    val1 = (`${val1}`).slice(0, -1);
+    if (val1 == 0 || val1 == '') {
         val1 = null;
     }
     updateDisplay();
 });
 
+pointButton.addEventListener("click", () => {
+    val1 = val1 + ".";
+    updateDisplay();
+});
 
 let opButtons = document.querySelectorAll(".opButton");
 opButtons.forEach((element) => {
@@ -117,3 +121,59 @@ opButtons.forEach((element) => {
 });
 
 
+const follower = document.getElementById('follower');
+let mouseX = 0, mouseY = 0;
+let followerX = 0, followerY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animate() {
+  // Smooth interpolation (lerp)
+  followerX += (mouseX - followerX) * .1;
+  followerY += (mouseY - followerY) * .1;
+  
+  follower.style.left = followerX + 'px';
+  follower.style.top = followerY + 'px';
+  
+  requestAnimationFrame(animate);
+}
+
+let buttons = document.querySelectorAll("button");
+
+buttons.forEach(
+    (button) => {
+        let buttonColoring = document.createElement("div");
+        button.prepend(buttonColoring);
+        buttonColoring.classList.add("buttonColoring");
+
+        let rect = button.getBoundingClientRect();
+        let posX;
+        let posY;
+
+        document.addEventListener("mousemove", (e) => {
+            posX = mouseX - rect.left;
+            posY = mouseY - rect.top;
+
+            // const angle = Math.atan2(mouseY - (rect.top+rect.height/4), mouseX - (rect.left+rect.width/4));
+            // button.children[0].style.transform = `rotate(${angle*(180/Math.PI) +45}deg)`;
+
+        });
+
+        button.addEventListener("mouseenter", () => {
+            button.children[0].style.left = `calc(${posX}px - 5rem)`;
+            button.children[0].style.top = `calc(${posY}px - 5rem)`;
+
+            
+            setTimeout(() => {
+                button.children[0].style.left = "calc(-5rem + 50%)";
+                button.children[0].style.top = "calc(-5rem + 50%)";
+            }, 500);
+        });
+    }
+);
+
+
+animate();
