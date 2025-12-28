@@ -66,7 +66,7 @@ body {
     position: fixed;
     width: 30px;
     height: 30px;
-    background: #ff6b6b;
+    background: #101010;
     border-radius: 50%;
     pointer-events: none; /* So it doesn't interfere with mouse events */
     transform: translate(-50%, -50%); /* Centers the circle on cursor */
@@ -84,15 +84,24 @@ button {
 
 .buttonColoring {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 10rem;
+  left: 10rem;
   width: 10rem;
   height: 10rem;
   transition: left 0.5s ease, top 0.5s ease;
   transform: rotate(0);
-  z-index: 2;
-  background-color: #8b5cf6;
+  z-index: 1;
+  background-color: #101010;
   border-radius: 100%;
+}
+
+button p {
+    position: relative;
+    z-index: 3;
+}
+
+.disableTransition {
+    transition: none;
 }
 
 /* button:hover .buttonColoring {
