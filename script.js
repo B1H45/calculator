@@ -109,7 +109,6 @@ clearButton.addEventListener("click", () => {
     val1 = null;
     val2 = null;
     op = null;
-    nope = false;
     updateDisplay();
 });
 
@@ -160,60 +159,66 @@ function animate() {
 
 let buttons = document.querySelectorAll("button");
 
-buttons.forEach(
-    (button) => {
-        let buttonColoring = document.createElement("div");
-        button.append(buttonColoring);
-        buttonColoring.classList.add("buttonColoring");
-
-        let rect = button.getBoundingClientRect();
-        let posX;
-        let posY;
-
-        document.addEventListener("mousemove", (e) => {
-            posX = mouseX - rect.left - rect.width/2;
-            posY = mouseY - rect.top - rect.height/2;
-
-            // const angle = Math.atan2(mouseY - (rect.top+rect.height/4), mouseX - (rect.left+rect.width/4));
-            // button.children[0].style.transform = `rotate(${angle*(180/Math.PI) +45}deg)`;
-
-        });
-
-        button.addEventListener("mouseenter", () => {
-            let xOffset = Math.cos(Math.atan2(posY, posX))*200;
-            let yOffset = Math.sin(Math.atan2(posY, posX))*200;
-
-            if (button.id == "clear") {
-                console.log(`xOffset: ${xOffset}, yOffset: ${yOffset}`);
-            }
-
-            button.children[1].classList.add("disableTransition");
-            
-            button.children[1].style.left = `calc((${xOffset + rect.width/2}px - 5rem))`;
-            button.children[1].style.top = `calc((${yOffset + rect.height/2}px - 5rem))`;
-        
-            follower.style.transform = "translate(-50%, -50%) scale(0.1)";
-            follower.style.transition = "transform .5s ease-out";
-
-            setTimeout(() => {
-                button.children[1].classList.remove("disableTransition");
-                button.children[1].style.left = "calc(50% - 5rem)";
-                button.children[1].style.top = "calc(50% - 5rem)";
-            }, 10);
-
-        });
-
-        button.addEventListener("mouseleave", () => {
-            let xOffset = Math.cos(Math.atan2(posY, posX))*200;
-            let yOffset = Math.sin(Math.atan2(posY, posX))*200;
-
-            button.children[1].style.left = `calc((${xOffset + rect.width/2}px - 5rem))`;
-            button.children[1].style.top = `calc((${yOffset + rect.height/2}px - 5rem))`;
-
-            follower.style.transform = "translate(-50%, -50%)";
-        });
-    }
-);
+buttons.forEach((button) => {
+  // Create the wipe element
+  let buttonColoring = document.createElement("div");
+  button.append(buttonColoring);
+  buttonColoring.classList.add("buttonColoring");
+  
+  button.addEventListener("mouseenter", (e) => {
+    // Get fresh rect on each mouseenter
+    const rect = button.getBoundingClientRect();
+    
+    // Mouse position relative to button center
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+    
+    // Calculate angle and offset
+    const angle = Math.atan2(mouseY, mouseX);
+    const distance = 200; // How far outside the button to start
+    const xOffset = Math.cos(angle) * distance;
+    const yOffset = Math.sin(angle) * distance;
+    
+    // Disable transition, move to start position
+    buttonColoring.style.transition = 'none';
+    buttonColoring.style.left = `calc(50% + ${xOffset}px - 5rem)`;
+    buttonColoring.style.top = `calc(50% + ${yOffset}px - 5rem)`;
+    
+    // Force reflow to apply the position change
+    buttonColoring.offsetHeight;
+    
+    // Re-enable transition and animate to center
+    buttonColoring.style.transition = 'left 0.5s ease, top 0.5s ease';
+    buttonColoring.style.left = 'calc(50% - 5rem)';
+    buttonColoring.style.top = 'calc(50% - 5rem)';
+    
+    // Scale down follower
+    follower.style.transform = "translate(-50%, -50%) scale(0.1)";
+    follower.style.transition = "transform .5s ease-out";
+  });
+  
+  button.addEventListener("mouseleave", (e) => {
+    // Get fresh rect
+    const rect = button.getBoundingClientRect();
+    
+    // Mouse position relative to button center
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+    
+    // Calculate exit direction
+    const angle = Math.atan2(mouseY, mouseX);
+    const distance = 200;
+    const xOffset = Math.cos(angle) * distance;
+    const yOffset = Math.sin(angle) * distance;
+    
+    // Animate out in the direction of exit
+    buttonColoring.style.left = `calc(50% + ${xOffset}px - 5rem)`;
+    buttonColoring.style.top = `calc(50% + ${yOffset}px - 5rem)`;
+    
+    // Reset follower
+    follower.style.transform = "translate(-50%, -50%)";
+  });
+});
 
 
 animate();
