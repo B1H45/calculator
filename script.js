@@ -177,6 +177,7 @@ buttons.forEach(
         });
 
         button.addEventListener("mouseenter", () => {
+            rect = button.getBoundingClientRect();
             let xOffset = Math.cos(Math.atan2(posY, posX))*200;
             let yOffset = Math.sin(Math.atan2(posY, posX))*200;
 
@@ -201,6 +202,7 @@ buttons.forEach(
         });
 
         button.addEventListener("mouseleave", () => {
+            rect = button.getBoundingClientRect();
             let xOffset = Math.cos(Math.atan2(posY, posX))*200;
             let yOffset = Math.sin(Math.atan2(posY, posX))*200;
 
