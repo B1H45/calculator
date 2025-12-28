@@ -166,17 +166,14 @@ buttons.forEach(
         button.append(buttonColoring);
         buttonColoring.classList.add("buttonColoring");
 
-        let rect = button.getBoundingClientRect();
+        let rect;
         let posX;
         let posY;
 
         document.addEventListener("mousemove", (e) => {
+            rect = button.getBoundingClientRect();
             posX = mouseX - rect.left - rect.width/2;
             posY = mouseY - rect.top - rect.height/2;
-
-            // const angle = Math.atan2(mouseY - (rect.top+rect.height/4), mouseX - (rect.left+rect.width/4));
-            // button.children[0].style.transform = `rotate(${angle*(180/Math.PI) +45}deg)`;
-
         });
 
         button.addEventListener("mouseenter", () => {
@@ -195,11 +192,11 @@ buttons.forEach(
             follower.style.transform = "translate(-50%, -50%) scale(0.1)";
             follower.style.transition = "transform .5s ease-out";
 
-            setTimeout(() => {
-                button.children[1].classList.remove("disableTransition");
-                button.children[1].style.left = "calc(50% - 5rem)";
-                button.children[1].style.top = "calc(50% - 5rem)";
-            }, 10);
+            buttonColoring.offsetHeight;
+
+            button.children[1].classList.remove("disableTransition");
+            button.children[1].style.left = "calc(50% - 5rem)";
+            button.children[1].style.top = "calc(50% - 5rem)";
 
         });
 
