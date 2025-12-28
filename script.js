@@ -10,16 +10,16 @@ let operate = function() {
 
     switch (op.parentElement.id) {
         case "add":
-            result = parseFloat((val2 + val1).toFixed(8));
+            result = parseFloat((val2 + val1).toFixed(7));
             break;
         case "subtract":
-            result = parseFloat((val2 - val1).toFixed(8));
+            result = parseFloat((val2 - val1).toFixed(7));
             break;
         case "multiply":
-            result = parseFloat((val2 * val1).toFixed(8));
+            result = parseFloat((val2 * val1).toFixed(7));
             break;
         case "divide":
-            result = parseFloat((val2 / val1).toFixed(8));
+            result = parseFloat((val2 / val1).toFixed(7));
             break;
     }
 
